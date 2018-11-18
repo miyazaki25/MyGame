@@ -3,33 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class hitboxcontroller : MonoBehaviour {
-    public GameObject hitboxprefab;
-    // Use this for initialization
+
     public GameObject player;
 
-    public GameObject hitboxclone;
-
+    public int damege = 0;
+    
+    // Use this for initialization
     void Start () {
-        
-    }
+     
+	}
 	
 	// Update is called once per frame
 	void Update () {
-
-
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-          
-            GameObject go = Instantiate(hitboxprefab) as GameObject;
-            go.transform.position = new Vector2(player.transform.position.x-0.7f, player.transform.position.y);
-            hitboxclone = GameObject.Find("hitboxprefab(Clone)");
-            Destroy(hitboxclone, 1.0f);
-
-
-        }
  
+    }
 
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "enemy")
+        {
+            player.GetComponent<playercontroller2>().hithantei();
+            Debug.Log(damege.ToString());
+        
+        }
     }
 }
