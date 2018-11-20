@@ -5,10 +5,8 @@ using UnityEngine;
 public class hitboxenemycontroller : MonoBehaviour
 {
 
-    public GameObject player;
-
     public int damege = 0;
-
+    public float hitkoutyoku = 0;
     // Use this for initialization
     void Start()
     {
@@ -26,7 +24,8 @@ public class hitboxenemycontroller : MonoBehaviour
     {
         if (other.gameObject.tag == "player")
         {
-            other.GetComponent<playercontroller2>().hidan(damege);
+            other.GetComponent<playercontroller2>().hidan(damege, hitkoutyoku);
+
         }
     }
 }

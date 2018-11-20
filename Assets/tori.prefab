@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50602574198630992}
   - component: {fileID: 61821713048739500}
   - component: {fileID: 114274502786269004}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: tori
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61821713048739500
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 1
-  damage: 0
 --- !u!212 &212716374169582826
 SpriteRenderer:
   m_ObjectHideFlags: 1

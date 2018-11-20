@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class enemygeneratorcontroller : MonoBehaviour {
 
     int syutugen = 0;
-    int gekiha = 0;
     int gamen = 0;
     float cycle = 0;
 
     public GameObject zako;
     public GameObject tori;
+    public GameObject zako2;
+
 
     GameObject[] tagObjects;
 
@@ -24,17 +26,10 @@ public class enemygeneratorcontroller : MonoBehaviour {
     }
 
 
-
-
-
-
-
-
-
     // Use this for initialization
     void Start () {
-		
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -61,6 +56,16 @@ public class enemygeneratorcontroller : MonoBehaviour {
                     go.transform.localScale = new Vector2(-1, 1);
                     syutugen += 1;
                 }
+
+                else if(syutugen == 1)
+                {
+                    GameObject go = Instantiate(zako2) as GameObject;
+                    go.transform.position = new Vector2(9, 1f);
+                    go.transform.localScale = new Vector2(-1, 1);
+                    syutugen += 1;
+                }
+
+
                 else if (syutugen < 100)
                 {
                     GameObject go = Instantiate(zako) as GameObject;
@@ -82,7 +87,14 @@ public class enemygeneratorcontroller : MonoBehaviour {
                         go.transform.localScale = new Vector2(1, 1);
                         syutugen += 1;
                     }
-                    else if (syutugen < 100)
+                   else if (syutugen == 1)
+                   {
+                    GameObject go = Instantiate(zako2) as GameObject;
+                    go.transform.position = new Vector2(9, 1f);
+                    go.transform.localScale = new Vector2(-1, 1);
+                    syutugen += 1;
+                    }
+                   else if (syutugen < 100)
                     {
                         GameObject go = Instantiate(zako) as GameObject;
                         go.transform.position = new Vector2(-9, -3.15f);

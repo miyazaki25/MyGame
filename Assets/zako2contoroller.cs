@@ -2,33 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class zakocontoroller : MonoBehaviour {
+public class zako2contoroller : MonoBehaviour
+{
 
     //アニメーションするためのコンポーネントを入れる
     private Animator myAnimator;
 
     float speed = 0.01f;
-    public int HP = 1;
+    public int HP = 3;
     public GameObject hitboxenemy;
     private GameObject player;
     private GameObject textcontroller;
     //攻撃サイクル
     private float cycle = 0;
-    
+
     //硬直
     public float koutyoku;
-    public float hidankoutyoku;
+    public float hitkoutyoku;
     public float cansel;
     public int combosu;
-   
+
     //攻撃地上１
     public IEnumerator attack1()
     {
 
         //硬直に代入
         koutyoku = 1.6f;
-
-
 
         //キャンセル可能時間
         cansel = 0.7f;
@@ -41,8 +40,7 @@ public class zakocontoroller : MonoBehaviour {
         Destroy(go, 0.3f);
         //ダメージ
         go.GetComponent<hitboxenemycontroller>().damege = 1;
-        //ヒット時硬直差
-        go.GetComponent<hitboxenemycontroller>().hitkoutyoku = 0.8f;
+
     }
     //フェイント関数
     public void feint()
@@ -53,26 +51,28 @@ public class zakocontoroller : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
-       
+    void Start()
+    {
+
         player = GameObject.FindWithTag("player");
         textcontroller = GameObject.Find("textcontroller");
-       
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "hitboxplayer")
         {
-           HP -= other.GetComponent<hitboxcontroller>().damege;
-           this.hidankoutyoku = other.GetComponent<hitboxcontroller>().hitkoutyoku;
+            HP -= other.GetComponent<hitboxcontroller>().damege;
+            this.hitkoutyoku = other.GetComponent<hitboxcontroller>().hitkoutyoku;
         }
     }
 
 
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         //プレイヤーとの距離
         float a = player.transform.position.x;
         float b = this.transform.position.x;
@@ -83,37 +83,37 @@ public class zakocontoroller : MonoBehaviour {
         {
             koutyoku -= Time.deltaTime;
         }
-        if(hidankoutyoku >= 0)
+        if (hitkoutyoku >= 0)
         {
-            hidankoutyoku -= Time.deltaTime;
+            hitkoutyoku -= Time.deltaTime;
         }
-        if (koutyoku <= 0 && hidankoutyoku <=0)
+        if (koutyoku <= 0 && hitkoutyoku <= 0)
         {
             this.transform.position += new Vector3(speed * this.transform.localScale.x, 0, 0);
         }
-       
+
 
         cycle += Time.deltaTime;
-        if(cycle > 1 && hidankoutyoku <= 0)
+        if (cycle > 1 && hitkoutyoku <= 0)
         {
             cycle = 0;
             int d = Random.Range(1, 6);
-             if (c < 2)
+            if (c < 2)
             {
-                if(d > 2)
+                if (d > 2)
                 {
                     StartCoroutine("attack1");
                 }
-                else if(d == 2)
+                else if (d == 2)
                 {
                     feint();
                 }
             }
-             else if(2 <= c && c < 4)
+            else if (2 <= c && c < 4)
             {
                 if (d == 4)
                 {
-                   StartCoroutine("attack1");
+                    StartCoroutine("attack1");
                 }
                 else if (d > 4)
                 {

@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4658885687330876}
   - component: {fileID: 212864562876618268}
   - component: {fileID: 50131693102475158}
-  - component: {fileID: 61495595436576068}
   - component: {fileID: 114489137931766354}
-  m_Layer: 0
+  - component: {fileID: 70252277084573062}
+  m_Layer: 10
   m_Name: zako
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1900590511679542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.48, y: -3.16, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -62,9 +62,9 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!61 &61495595436576068
-BoxCollider2D:
+  m_Constraints: 4
+--- !u!70 &70252277084573062
+CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -76,18 +76,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Size: {x: 0.8, y: 1}
+  m_Direction: 0
 --- !u!114 &114489137931766354
 MonoBehaviour:
   m_ObjectHideFlags: 1

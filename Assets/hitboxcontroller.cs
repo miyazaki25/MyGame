@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class hitboxcontroller : MonoBehaviour {
 
-    public GameObject player;
+    private GameObject player;
 
     public int damege = 0;
+    public float hitkoutyoku;
     
     // Use this for initialization
     void Start () {
-     
-	}
+        player = GameObject.FindWithTag("player");
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -24,8 +25,7 @@ public class hitboxcontroller : MonoBehaviour {
         if (other.gameObject.tag == "enemy")
         {
             player.GetComponent<playercontroller2>().hithantei();
-            Debug.Log(damege.ToString());
-        
+            this.hitkoutyoku = player.GetComponent<playercontroller2>().hitkoutyoku;
         }
     }
 }
