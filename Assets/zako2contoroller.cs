@@ -9,7 +9,7 @@ public class zako2contoroller : MonoBehaviour
     private Animator myAnimator;
 
     float speed = 0.01f;
-    public int HP = 3;
+    public int HP = 30;
     public GameObject hitboxenemy;
     private GameObject player;
     private GameObject textcontroller;
@@ -53,7 +53,7 @@ public class zako2contoroller : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        HP = 30;
         player = GameObject.FindWithTag("player");
         textcontroller = GameObject.Find("textcontroller");
 
@@ -94,7 +94,7 @@ public class zako2contoroller : MonoBehaviour
 
 
         cycle += Time.deltaTime;
-        if (cycle > 1 && hitkoutyoku <= 0)
+        if (cycle > 3 && hitkoutyoku <= 0)
         {
             cycle = 0;
             int d = Random.Range(1, 6);
@@ -113,7 +113,7 @@ public class zako2contoroller : MonoBehaviour
             {
                 if (d == 4)
                 {
-                    StartCoroutine("attack1");
+
                 }
                 else if (d > 4)
                 {

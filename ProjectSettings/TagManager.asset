@@ -8,6 +8,7 @@ TagManager:
   - enemy
   - hitboxplayer
   - player
+  - tama
   layers:
   - Default
   - TransparentFX
@@ -20,9 +21,9 @@ TagManager:
   - Ground
   - player
   - enemy
-  - 
-  - 
-  - 
+  - sonzai
+  - air
+  - hitboxenemy
   - 
   - 
   - 

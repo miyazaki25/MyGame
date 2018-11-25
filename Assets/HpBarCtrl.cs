@@ -17,9 +17,10 @@ public class HpBarCtrl : MonoBehaviour
 
     void Update()
     {
-
         _hp = player.GetComponent<playercontroller2>().HP;
         // HPゲージに値を設定
         _slider.value = _hp;
     }
+
+
 }

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 50503367085015204}
   - component: {fileID: 114882240506539280}
   - component: {fileID: 58501823459050142}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: playerprefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,10 +110,14 @@ MonoBehaviour:
   HP: 2
   koutyoku: 0
   koutyokuair: 0
+  hidankoutyoku: 0
   hitbox: {fileID: 1678024496078332, guid: 68e8a4f3ddccda64bb2b86134f7f4dad, type: 2}
+  tama: {fileID: 0}
   hitsu: 0
   cansel: 0
+  hitkoutyoku: 0
   hit: 0
+  deadbody: {fileID: 0}
 --- !u!212 &212474002400634208
 SpriteRenderer:
   m_ObjectHideFlags: 1

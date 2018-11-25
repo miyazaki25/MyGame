@@ -7,6 +7,8 @@ public class hitboxenemycontroller : MonoBehaviour
 
     public int damege = 0;
     public float hitkoutyoku = 0;
+    public float huttobix = 0;
+    public float huttobiy = 0;
     // Use this for initialization
     void Start()
     {
@@ -24,7 +26,7 @@ public class hitboxenemycontroller : MonoBehaviour
     {
         if (other.gameObject.tag == "player")
         {
-            other.GetComponent<playercontroller2>().hidan(damege, hitkoutyoku);
+            other.GetComponent<playercontroller2>().hidan(damege, hitkoutyoku,huttobix,huttobiy);
 
         }
     }

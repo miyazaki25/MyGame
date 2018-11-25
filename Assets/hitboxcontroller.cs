@@ -8,15 +8,19 @@ public class hitboxcontroller : MonoBehaviour {
 
     public int damege = 0;
     public float hitkoutyoku;
+    public float futtobix = 0;
+    public float futtobiy = 0;
     
     // Use this for initialization
     void Start () {
         player = GameObject.FindWithTag("player");
+        this.hitkoutyoku = player.GetComponent<playercontroller2>().hitkoutyoku;
+        Debug.Log(hitkoutyoku);
     }
 	
 	// Update is called once per frame
 	void Update () {
- 
+   
     }
 
 
@@ -25,7 +29,7 @@ public class hitboxcontroller : MonoBehaviour {
         if (other.gameObject.tag == "enemy")
         {
             player.GetComponent<playercontroller2>().hithantei();
-            this.hitkoutyoku = player.GetComponent<playercontroller2>().hitkoutyoku;
+
         }
     }
 }

@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 61977988845134994}
   - component: {fileID: 114854871701543448}
   - component: {fileID: 114862333659825696}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: hitboxenemy
-  m_TagString: hitboxplayer
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,8 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 898819baa0c936e4caf6edda934a80a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   damege: 0
+  hitkoutyoku: 0
+  futtobix: 0
+  futtobiy: 0
 --- !u!114 &114862333659825696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,8 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7b649c4e670924b85ddb15a1f8375d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   damege: 0
+  hitkoutyoku: 0
 --- !u!212 &212665961805928908
 SpriteRenderer:
   m_ObjectHideFlags: 1
