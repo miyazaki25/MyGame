@@ -248,7 +248,7 @@ public class playercontroller2 : MonoBehaviour {
         gameObject.transform.localScale = temp;
 
         //硬直に代入
-        koutyoku = 2.0f;
+        koutyoku = 1.8f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
 
@@ -747,17 +747,19 @@ public class playercontroller2 : MonoBehaviour {
         }
 
         //エフェクト関係
-        if(tamezikan > 0.5f && tamezikan <=2)
+        if(tamezikan > 0.5f && tamezikan <= 2)
         {
             GetComponent<ParticleSystem>().Play();
-            GetComponent<ParticleSystem>().startColor = Color.blue;
+            ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
+            par.startColor = Color.yellow;
         }
         else if(tamezikan > 2)
         {
-
-            GetComponent<ParticleSystem>().startColor = Color.red;
+            GetComponent<ParticleSystem>().Play();
+            ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
+            par.startColor = Color.red;
         }
-        else if(tamezikan <= 0)
+        else if(tamezikan <= 0.5f)
         {
             GetComponent<ParticleSystem>().Stop();
         }
