@@ -7,6 +7,11 @@ public class playercontroller2 : MonoBehaviour {
     
     //HP
     public int HP;
+    //SE関係
+    private AudioSource[] audioSource;
+ 
+    public AudioClip[] sound = new AudioClip[5];
+    private int chagese;
     
     
     //アニメーションするためのコンポーネントを入れる
@@ -86,18 +91,22 @@ public class playercontroller2 : MonoBehaviour {
 
         //横方向に力をくわえる
         this.rigid2D.velocity = new Vector2(2 * muki, 0);
-
+        //音を鳴らす
+        audioSource[0].PlayOneShot(sound[0]);
         yield return new WaitForSeconds(0.2f);
+     
 
         //当たり判定を作成
         GameObject go = Instantiate(hitbox) as GameObject;
+
        go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
         go.transform.localScale = new Vector3(0.7f * this.gameObject.transform.localScale.x, 0.5f, 1);
         Destroy(go, 0.3f);
-        //ダメージ
+        //ダメージ、吹っ飛び、ＳＥ
         go.GetComponent<hitboxcontroller>().damege = 1;
         go.GetComponent<hitboxcontroller>().futtobix = 0;
         go.GetComponent<hitboxcontroller>().futtobiy = 0;
+        go.GetComponent<hitboxcontroller>().sound = sound[2];
 
     }
 
@@ -125,6 +134,8 @@ public class playercontroller2 : MonoBehaviour {
 
         //横方向に力をくわえる
         this.rigid2D.velocity = new Vector2(0 * muki, 0);
+
+        audioSource[0].PlayOneShot(sound[2]);
 
         //当たり判定を作成
         yield return new WaitForSeconds(0.2f);
@@ -159,7 +170,12 @@ public class playercontroller2 : MonoBehaviour {
         //横方向に力をくわえる
         this.rigid2D.velocity = new Vector2(0 * muki, 0);
 
+        //音を鳴らす
+        audioSource[0].PlayOneShot(sound[3]);
+
         yield return new WaitForSeconds(0.2f);
+
+    
 
         //当たり判定を作成
         GameObject go = Instantiate(hitbox) as GameObject;
@@ -504,11 +520,16 @@ public class playercontroller2 : MonoBehaviour {
         this.myAnimator = GetComponent<Animator>();
         this.rigid2D = GetComponent<Rigidbody2D>();
         this.textcontroller = GameObject.Find("textcontroller");
+      //conponetsのsが大事
+        audioSource = gameObject.GetComponents<AudioSource>();
+
+        //SE関係
+   
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+       
      
   
         //地面判定
@@ -517,7 +538,7 @@ public class playercontroller2 : MonoBehaviour {
         if (isGround)
         {
             myAnimator.SetBool("groundbool", true);
-
+          
         }
         else
         {
@@ -690,6 +711,9 @@ public class playercontroller2 : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.A) && isGround　&& koutyoku <= 0)
         {
             jump(-1);
+            //音を鳴らす
+            audioSource[0].PlayOneShot(sound[1]);
+
         }
 
 
@@ -697,6 +721,8 @@ public class playercontroller2 : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.D) && isGround && koutyoku <= 0)
         {
             jump(1);
+            //音を鳴らす
+            audioSource[0].PlayOneShot(sound[1]);
         }
 
 
@@ -752,16 +778,34 @@ public class playercontroller2 : MonoBehaviour {
             GetComponent<ParticleSystem>().Play();
             ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
             par.startColor = Color.yellow;
+            if (chagese == 0)
+            {
+                audioSource[2].Play();
+                chagese = 1;
+            }
+         
         }
         else if(tamezikan > 2)
         {
             GetComponent<ParticleSystem>().Play();
             ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
             par.startColor = Color.red;
+            if(chagese == 1)
+            {
+                audioSource[0].PlayOneShot(sound[4]);
+                chagese = 2;
+            }
+      
         }
         else if(tamezikan <= 0.5f)
         {
             GetComponent<ParticleSystem>().Stop();
+
+            if (chagese == 2)
+            {
+                audioSource[2].Stop();
+                chagese = 0;
+            }
         }
     }
 }
