@@ -83,6 +83,7 @@ MonoBehaviour:
   hitkoutyoku: 0
   futtobix: 0
   futtobiy: 0
+  soundnuber: 0
 --- !u!114 &114862333659825696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -96,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damege: 0
   hitkoutyoku: 0
+  huttobix: 0
+  huttobiy: 0
 --- !u!212 &212665961805928908
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -129,7 +132,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 040710770e38281478a1fe34be410e27, type: 3}
   m_Color: {r: 0.9264706, g: 0.1362457, b: 0.1362457, a: 1}
   m_FlipX: 0

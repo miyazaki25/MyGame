@@ -12,6 +12,7 @@ public class playercontroller2 : MonoBehaviour {
  
     public AudioClip[] sound = new AudioClip[5];
     private int chagese;
+    soundsingleton soundsin;
     
     
     //アニメーションするためのコンポーネントを入れる
@@ -31,7 +32,10 @@ public class playercontroller2 : MonoBehaviour {
     public float koutyokuair;
     //被弾硬直
     public float hidankoutyoku;
-
+    //無敵時間
+    private float mutekizikan;
+    private float toumeido = 1;
+    private bool hidantyu;
     //空中ワザ
     bool wazaair;
 
@@ -42,7 +46,7 @@ public class playercontroller2 : MonoBehaviour {
     private bool dead = false;
 
     //地面
-    private float ground = -3.65f;
+    private float ground = -1.66f;
 
     //攻撃関係
     public GameObject hitbox;
@@ -60,6 +64,9 @@ public class playercontroller2 : MonoBehaviour {
     //タメ時間
     private float tamezikan = 0;
 
+    //必殺技キャンセル用
+
+    private bool hissatubool;
 
     //攻撃関数\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //攻撃ヒット時に呼び出す関数
@@ -79,34 +86,51 @@ public class playercontroller2 : MonoBehaviour {
         gameObject.transform.localScale = temp;
 
         //硬直に代入
-        koutyoku = 1f;
+        koutyoku = 0.8f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
+        //ヒットをfalseに
+        hit = false;
 
         //キャンセル可能時間
-        cansel = 0.7f;
-        //コンボ数をふやす
-        combosu = 1;
+        cansel = 0.6f;
+
+       
         myAnimator.SetTrigger("atacktrriger");
 
         //横方向に力をくわえる
         this.rigid2D.velocity = new Vector2(2 * muki, 0);
         //音を鳴らす
-        audioSource[0].PlayOneShot(sound[0]);
-        yield return new WaitForSeconds(0.2f);
-     
+        soundsin.sound0(1);
+
+
+        yield return new WaitForSeconds(0.25f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
+        //必殺キャンセルでとまる
+        if (hissatubool)
+        {
+            yield break;
+        }
+
+
+        //コンボ数をふやす
+        combosu = 1;
 
         //当たり判定を作成
         GameObject go = Instantiate(hitbox) as GameObject;
 
-       go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
-        go.transform.localScale = new Vector3(0.7f * this.gameObject.transform.localScale.x, 0.5f, 1);
+       go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x, this.transform.position.y);
+        go.transform.localScale = new Vector3(2f * this.gameObject.transform.localScale.x, 0.5f, 1);
         Destroy(go, 0.3f);
         //ダメージ、吹っ飛び、ＳＥ
         go.GetComponent<hitboxcontroller>().damege = 1;
         go.GetComponent<hitboxcontroller>().futtobix = 0;
         go.GetComponent<hitboxcontroller>().futtobiy = 0;
-        go.GetComponent<hitboxcontroller>().sound = sound[2];
+        go.GetComponent<hitboxcontroller>().soundnuber = 2;
 
     }
 
@@ -115,36 +139,47 @@ public class playercontroller2 : MonoBehaviour {
     public IEnumerator attack2(int muki)
     {
         //向きを変更
-       　Vector2 temp = gameObject.transform.localScale;
+        Vector2 temp = gameObject.transform.localScale;
         temp.x = muki;
         gameObject.transform.localScale = temp;
-        //硬直に代入
-        koutyoku = 0.8f;
 
+        //硬直に代入
+        koutyoku = 0.9f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
-
+        //ヒットをfalseに
+        hit = false;
         //キャンセル可能時間
-        cansel = 0.7f;
-
-        //コンボ数をふやす
-        combosu = 2;
-
+        cansel = 0.8f;
+        
         myAnimator.SetTrigger("attacktrriger2");
 
         //横方向に力をくわえる
-        this.rigid2D.velocity = new Vector2(0 * muki, 0);
+        this.rigid2D.velocity = new Vector2(2 * muki, 0);
+        //音を鳴らす
+        soundsin.sound0(1);
 
-        audioSource[0].PlayOneShot(sound[2]);
+
+        yield return new WaitForSeconds(0.3f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
+        //コンボ数をふやす
+        combosu = 2;
 
         //当たり判定を作成
-        yield return new WaitForSeconds(0.2f);
         GameObject go = Instantiate(hitbox) as GameObject;
+
         go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
         go.transform.localScale = new Vector3(0.7f * this.gameObject.transform.localScale.x, 0.5f, 1);
-        Destroy(go, 0.6f);
+        Destroy(go, 0.3f);
+        //ダメージ、吹っ飛び、ＳＥ
         go.GetComponent<hitboxcontroller>().damege = 1;
-
+        go.GetComponent<hitboxcontroller>().futtobix = 0;
+        go.GetComponent<hitboxcontroller>().futtobiy = 0;
+        go.GetComponent<hitboxcontroller>().soundnuber = 2;
     }
 
 
@@ -160,32 +195,38 @@ public class playercontroller2 : MonoBehaviour {
         koutyoku = 1f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
-
+        //ヒットをfalseに
+        hit = false;
         //キャンセル可能時間
         cansel = 0.7f;
-        //コンボ数をふやす
-        combosu = 3;
+        
         myAnimator.SetTrigger("atacktrriger");
 
         //横方向に力をくわえる
-        this.rigid2D.velocity = new Vector2(0 * muki, 0);
-
+        this.rigid2D.velocity = new Vector2(2 * muki, 0);
         //音を鳴らす
-        audioSource[0].PlayOneShot(sound[3]);
+        soundsin.sound0(1);
 
-        yield return new WaitForSeconds(0.2f);
 
-    
-
+        yield return new WaitForSeconds(0.35f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
+        //コンボ数をふやす
+        combosu = 3;
         //当たり判定を作成
         GameObject go = Instantiate(hitbox) as GameObject;
+
         go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
         go.transform.localScale = new Vector3(0.7f * this.gameObject.transform.localScale.x, 0.5f, 1);
         Destroy(go, 0.3f);
-        //ダメージ
-        go.GetComponent<hitboxcontroller>().damege = 2;
+        //ダメージ、吹っ飛び、ＳＥ
+        go.GetComponent<hitboxcontroller>().damege = 1;
         go.GetComponent<hitboxcontroller>().futtobix = 2;
         go.GetComponent<hitboxcontroller>().futtobiy = 2;
+        go.GetComponent<hitboxcontroller>().soundnuber = 3;
 
     }
 
@@ -196,63 +237,101 @@ public class playercontroller2 : MonoBehaviour {
         Vector2 temp = gameObject.transform.localScale;
         temp.x = muki;
         gameObject.transform.localScale = temp;
+
         //硬直に代入
         koutyokuair = 1.2f;
-
-        //キャンセル可能時間
-        cansel = 0.7f;
-
         //ヒット硬直
         hitkoutyoku = 0.8f;
-
-        //コンボ数をふやす
-        combosu = 1;
-
-        myAnimator.SetTrigger("jumpattacktrriger");
-
+      
+        //ヒットをfalseに
+        hit = false;
+       
         //空中攻撃判定
         wazaair = true;
 
+        //キャンセル可能時間
+        cansel = 0.8f;
+
+        myAnimator.SetTrigger("jumpattacktrriger");
+
+       
+        //音を鳴らす
+        soundsin.sound0(1);
+
+
+        yield return new WaitForSeconds(0.25f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
+        //コンボ数をふやす
+        combosu = 1;
 
         //当たり判定を作成
-        yield return new WaitForSeconds(0.2f);
         GameObject go = Instantiate(hitbox) as GameObject;
-        go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x , this.transform.position.y);
-        Destroy(go, 0.8f);
+
+        go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
+        go.transform.localScale = new Vector3(1.5f * this.gameObject.transform.localScale.x, 1f, 1);
+        Destroy(go, 0.3f);
+        //ダメージ、吹っ飛び、ＳＥ
         go.GetComponent<hitboxcontroller>().damege = 1;
+        go.GetComponent<hitboxcontroller>().futtobix = 0;
+        go.GetComponent<hitboxcontroller>().futtobiy = 0;
+        go.GetComponent<hitboxcontroller>().soundnuber = 2;
 
     }
   
     //空中攻撃2
     public IEnumerator attackair2(int muki)
     {
+
         //向きを変更
         Vector2 temp = gameObject.transform.localScale;
         temp.x = muki;
         gameObject.transform.localScale = temp;
+
         //硬直に代入
         koutyokuair = 1.2f;
-
         //ヒット硬直
         hitkoutyoku = 0.8f;
+        //ヒットをfalseに
+        hit = false;
+        //空中攻撃判定
+        wazaair = true;
 
         //キャンセル可能時間
         cansel = 0.7f;
 
+        myAnimator.SetTrigger("jumpattacktrriger");
+
+        //横方向に力をくわえる
+        this.rigid2D.velocity = new Vector2(0 * muki, 0);
+        //音を鳴らす
+        soundsin.sound0(1);
+
+
+        yield return new WaitForSeconds(0.2f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
         //コンボ数をふやす
         combosu = 2;
 
-        myAnimator.SetTrigger("jumpattacktrriger");
-
-        //空中攻撃判定
-        wazaair = true;
-
         //当たり判定を作成
-        yield return new WaitForSeconds(0.25f);
         GameObject go = Instantiate(hitbox) as GameObject;
+
         go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
-        Destroy(go, 0.6f);
+        go.transform.localScale = new Vector3(1.5f * this.gameObject.transform.localScale.x, 1f, 1);
+        Destroy(go, 0.3f);
+        //ダメージ、吹っ飛び、ＳＥ
         go.GetComponent<hitboxcontroller>().damege = 1;
+        go.GetComponent<hitboxcontroller>().futtobix = 3;
+        go.GetComponent<hitboxcontroller>().futtobiy = -5;
+        go.GetComponent<hitboxcontroller>().soundnuber = 2;
+
     }
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     //ファイアボール
@@ -264,7 +343,7 @@ public class playercontroller2 : MonoBehaviour {
         gameObject.transform.localScale = temp;
 
         //硬直に代入
-        koutyoku = 1.8f;
+        koutyoku = 1.3f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
 
@@ -273,17 +352,29 @@ public class playercontroller2 : MonoBehaviour {
         //コンボ数をふやす
         combosu = 1;
         myAnimator.SetTrigger("firebolltirrger");
+        //音を鳴らす
+        soundsin.sound0(6);
 
         //横方向に力をくわえる
         this.rigid2D.velocity = new Vector2(0 * muki, 0);
-
-        yield return new WaitForSeconds(0.2f);
+        //必殺技中判定
+        hissatubool = true;
+        yield return new WaitForSeconds(0.6f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
         //当たり判定を作成
         GameObject go = Instantiate(tama) as GameObject;
-        go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y);
+        go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x, this.transform.position.y);
+        go.transform.localScale = new Vector3(1 * this.gameObject.transform.localScale.x, 1, 1);
         Destroy(go, 3);
         //ダメージ
         go.GetComponent<tamacontoroller>().damege = 2;
+        go.GetComponent<tamacontoroller>().futtobix = 2;
+        go.GetComponent<tamacontoroller>().futtobiy = 2;
+        go.GetComponent<tamacontoroller>().soundnuber = 7;
 
     }
 
@@ -296,7 +387,7 @@ public class playercontroller2 : MonoBehaviour {
         gameObject.transform.localScale = temp;
 
         //硬直に代入
-        koutyoku = 2.0f;
+        koutyoku = 1.3f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
 
@@ -307,16 +398,73 @@ public class playercontroller2 : MonoBehaviour {
         myAnimator.SetTrigger("samasotrriger");
 
         //横方向に力をくわえる
-        this.rigid2D.velocity = new Vector2(0 * muki, 10);
+        this.rigid2D.velocity = new Vector2(1 * muki, 10);
+        //音を鳴らす
+        soundsin.sound0(4);
+        //無敵時間
+        mutekizikan = 04f;
+        //必殺技中判定
+        hissatubool = true;
 
-        yield return new WaitForSeconds(0.2f);
+
+        yield return new WaitForSeconds(0.3f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
         //当たり判定を作成
         GameObject go = Instantiate(hitbox) as GameObject;
         go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y+1);
-        go.transform.localScale =new Vector3 (0.7f, 2, 1);
-        Destroy(go, 0.3f);
+        go.transform.localScale =new Vector3 (1.2f * this.transform.localScale.x, 2.8f, 1);
+        Destroy(go, 0.4f);
+        
+        
         //ダメージ
-        go.GetComponent<hitboxcontroller>().damege = 1;
+        go.GetComponent<hitboxcontroller>().damege = 5;
+        go.GetComponent<hitboxcontroller>().futtobix = 3;
+        go.GetComponent<hitboxcontroller>().futtobiy = 3;
+        go.GetComponent<hitboxcontroller>().soundnuber = 3;
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 0.8f * this.transform.localScale.x, this.transform.position.y-3.5f);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.0f * this.transform.localScale.x, this.transform.position.y - 3f);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.2f * this.transform.localScale.x, this.transform.position.y - 2.5f);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.3f * this.transform.localScale.x, this.transform.position.y - 2f);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x, this.transform.position.y -1);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.6f * this.transform.localScale.x, this.transform.position.y -0.5f);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.7f * this.transform.localScale.x, this.transform.position.y );
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.7f * this.transform.localScale.x, this.transform.position.y);
+        }
 
     }
     //てつざんこう
@@ -328,7 +476,7 @@ public class playercontroller2 : MonoBehaviour {
         gameObject.transform.localScale = temp;
 
         //硬直に代入
-        koutyoku = 2.0f;
+        koutyoku = 1.4f;
         //ヒット硬直
         hitkoutyoku = 0.8f;
 
@@ -340,92 +488,201 @@ public class playercontroller2 : MonoBehaviour {
 
         //横方向に力をくわえる
         this.rigid2D.velocity = new Vector2(5 * muki, 0);
+        //音を鳴らす
+        soundsin.sound0(4);
 
-        yield return new WaitForSeconds(0.2f);
+        //無敵時間
+        mutekizikan = 0.55f;
+        //必殺技中判定
+        hissatubool = true;
+
+        yield return new WaitForSeconds(0.5f);
+        //被弾でとまる
+        if (hidankoutyoku >= 0)
+        {
+            yield break;
+        }
         //当たり判定を作成
         GameObject go = Instantiate(hitbox) as GameObject;
-        go.transform.position = new Vector2(this.transform.position.x + 1 * this.transform.localScale.x, this.transform.position.y );
-        go.transform.localScale = new Vector3(1, 1, 1);
-        Destroy(go, 0.3f);
+        go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x , this.transform.position.y );
+        go.transform.localScale = new Vector3(2f * this.gameObject.transform.localScale.x, 1.2f, 1);
+        Destroy(go, 0.5f);
         //ダメージ
         go.GetComponent<hitboxcontroller>().damege = 5;
+        go.GetComponent<hitboxcontroller>().futtobix = 4;
+        go.GetComponent<hitboxcontroller>().futtobiy = 4;
+        go.GetComponent<hitboxcontroller>().soundnuber = 3;
+
         yield return null;
-        go.transform.position = new Vector2(this.transform.position.x + 1.2f * this.transform.localScale.x, this.transform.position.y);
+        if(go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.2f * this.transform.localScale.x , this.transform.position.y);
+        }
         yield return null;
-        go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x, this.transform.position.y);
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x, this.transform.position.y);
+        }
         yield return null;
-        go.transform.position = new Vector2(this.transform.position.x + 1.5f * this.transform.localScale.x, this.transform.position.y);
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.6f * this.transform.localScale.x, this.transform.position.y);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.6f * this.transform.localScale.x, this.transform.position.y);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.7f * this.transform.localScale.x, this.transform.position.y);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.7f * this.transform.localScale.x, this.transform.position.y);
+        }
+        yield return null;
+        if (go != null)
+        {
+            go.transform.position = new Vector2(this.transform.position.x + 1.7f * this.transform.localScale.x , this.transform.position.y - 0.3f);
+        }
     }
 
     //必殺技コルーチン
     IEnumerator hissatuzi()
     {
-        if (Input.GetKeyDown(KeyCode.A) && koutyoku <= 0)
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            StartCoroutine("samaso", -1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("samaso", -1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("samaso", -1);
+                tamezikan = 0;
+                yield break;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D) && koutyoku <= 0)
+        else if (Input.GetKeyDown(KeyCode.D) )
         {
-            StartCoroutine("samaso", 1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("samaso", 1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("samaso", 1);
+                tamezikan = 0;
+                yield break;
+            }
         }
 
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && koutyoku <= 0)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            StartCoroutine("tetuzan", -1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("tetuzan", -1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("tetuzan", -1);
+                tamezikan = 0;
+                yield break;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && koutyoku <= 0)
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            StartCoroutine("tetuzan", 1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("tetuzan", 1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("tetuzan", 1);
+                tamezikan = 0;
+                yield break;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.C) && isGround && koutyoku <= 0)
-        {
-            StartCoroutine("fireboll", 1);
-            tamezikan = 0;
-            yield break;
-        }
+      
+          
+       
     }
     //必殺技コルーチン
     IEnumerator hissatuci()
     {
-        if (Input.GetKeyDown(KeyCode.A) && koutyoku <= 0)
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            StartCoroutine("samaso", -1);
-            tamezikan = 0;
-            yield break;
+            if(koutyoku <= 0)
+            {
+                StartCoroutine("samaso", -1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if(koutyoku > 0 && hit)
+            {
+                StartCoroutine("samaso", -1);
+                tamezikan = 0;
+                yield break;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D) && koutyoku <= 0)
+        else if (Input.GetKeyDown(KeyCode.D))
         {
-            StartCoroutine("samaso", 1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("samaso", 1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("samaso", 1);
+                tamezikan = 0;
+                yield break;
+            }
         }
 
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && koutyoku <= 0)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) )
         {
-            StartCoroutine("tetuzan", -1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("tetuzan", -1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("tetuzan", -1);
+                tamezikan = 0;
+                yield break;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && koutyoku <= 0)
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            StartCoroutine("tetuzan", 1);
-            tamezikan = 0;
-            yield break;
+            if (koutyoku <= 0)
+            {
+                StartCoroutine("tetuzan", 1);
+                tamezikan = 0;
+                yield break;
+            }
+            else if (koutyoku > 0 && hit)
+            {
+                StartCoroutine("tetuzan", 1);
+                tamezikan = 0;
+                yield break;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Z) && isGround && koutyoku <= 0)
-        {
-            StartCoroutine("fireboll", -1);
-            tamezikan = 0;
-            yield break;
-        }
+       
     }
 
 
@@ -435,34 +692,97 @@ public class playercontroller2 : MonoBehaviour {
         StartCoroutine("hissatuzi");
 
         yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
         StartCoroutine("hissatuzi");
 
         yield return null;
         StartCoroutine("hissatuzi");
 
         yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
         StartCoroutine("hissatuzi");
+        yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
+        StartCoroutine("hissatuzi");
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
+
         if (isGround && koutyoku <= 0)
         {
-                StartCoroutine("fireboll", muki);
+                StartCoroutine("fireboll", this.transform.localScale.x);
                 tamezikan = 0;
             yield break;
            
         }
+        else if(koutyoku > 0 && hit)
+        {
+            StartCoroutine("fireboll", this.transform.localScale.x);
+            tamezikan = 0;
+            yield break;
+        }
+  
     }
     //必殺技コルーチン２
     IEnumerator hissatuc(int muki)
     {
         StartCoroutine("hissatuci");
         yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
         StartCoroutine("hissatuci");
         yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
         StartCoroutine("hissatuci");
         yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
         StartCoroutine("hissatuci");
+        yield return null;
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
+        StartCoroutine("hissatuci");
+        //必殺打ったならブレイク
+        if (hissatubool)
+        {
+            yield break;
+        }
         if (isGround && koutyoku <= 0)
         {
-            StartCoroutine("fireboll", muki);
+            StartCoroutine("fireboll", this.transform.localScale.x);
+            tamezikan = 0;
+            yield break;
+        }
+        else if (koutyoku > 0 && hit)
+        {
+            StartCoroutine("fireboll", this.transform.localScale.x);
             tamezikan = 0;
             yield break;
         }
@@ -500,15 +820,16 @@ public class playercontroller2 : MonoBehaviour {
     //被弾関数
     public void hidan(int a, float b ,float c, float d)
     {
-       if(hidankoutyoku <= 0)
+       if(mutekizikan <= 0)
         {
             HP -= a;
             hidankoutyoku = b;
+            mutekizikan = b + 0.5f;
 
             Debug.Log(a.ToString() + "ダメージ" + "残りＨＰ" + HP.ToString() + "硬直" + hidankoutyoku);
             this.rigid2D.velocity = new Vector2(-this.gameObject.transform.localScale.x * c, d);
-        }
-      
+            hidantyu = true;
+        }    
     }
 
 
@@ -524,7 +845,7 @@ public class playercontroller2 : MonoBehaviour {
         audioSource = gameObject.GetComponents<AudioSource>();
 
         //SE関係
-   
+        soundsin = soundsingleton.Instance;
     }
 	
 	// Update is called once per frame
@@ -568,6 +889,32 @@ public class playercontroller2 : MonoBehaviour {
             koutyoku = hidankoutyoku;
             koutyokuair = hidankoutyoku;
         }
+        //無敵時間を減らす
+        if(mutekizikan > 0)
+        {
+            mutekizikan -= Time.deltaTime;
+            if (hidantyu)
+            {
+                toumeido = Mathf.Abs(Mathf.Sin(Time.time * 10));
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, toumeido);
+
+            }
+
+        }
+        if(mutekizikan <= 0)
+        {
+            if(toumeido != 1)
+            {
+                toumeido = 1;
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, toumeido);
+            }
+            if (hidantyu)
+            {
+                hidantyu = false;
+            }
+          
+        }
+
 
         //空中ワザ判定をリセット
         if (isGround && wazaair == true)
@@ -585,17 +932,26 @@ public class playercontroller2 : MonoBehaviour {
         {
             this.cansel -= Time.deltaTime;
         }
+
+
       
         //コンボ数をリセット
-        if (koutyoku <= 0 && combosu > 0)
+
+        if (koutyoku <= 0 && koutyokuair <= 0 && combosu > 0)
         {
             combosu = 0;
+            Debug.Log("コンボリセット" + combosu);
         }
 
+        //必殺キャンセルをリセット
+        if(koutyoku <= 0 && hissatubool)
+        {
+            hissatubool = false;
+        }
  
  
         //ヒットをリセット
-        if (koutyoku <= 0 && hit)
+        if (koutyoku <= 0 && koutyokuair <= 0 && hit)
         {
             hit = false;
         }
@@ -622,11 +978,7 @@ public class playercontroller2 : MonoBehaviour {
         //地上攻撃1 Z
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (koutyoku <= 0 && isGround && tamezikan > 2)
-            {
-                StartCoroutine("fireboll",-1);
-            }
-            else if (koutyoku <= 0 && isGround && combosu == 0)
+            if (koutyoku <= 0 && isGround && combosu == 0)
             {
               StartCoroutine("attack1",-1);
   
@@ -649,11 +1001,8 @@ public class playercontroller2 : MonoBehaviour {
         //地上攻撃1 C
         if (Input.GetKeyDown(KeyCode.C))
         {
-            if (koutyoku <= 0 && isGround && tamezikan > 2)
-            {
-                StartCoroutine("fireboll", 1);
-            }
-            else if (koutyoku <= 0 && isGround && combosu == 0)
+         
+            if (koutyoku <= 0 && isGround && combosu == 0)
             {
 
                 StartCoroutine("attack1",1);
@@ -670,36 +1019,39 @@ public class playercontroller2 : MonoBehaviour {
         }
         //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         //空中攻撃1 Z
-        if (Input.GetKeyDown(KeyCode.Z) && koutyokuair <= 0 && !isGround && combosu == 0  && !wazaair)
-
+ 
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-
-
-            StartCoroutine("attackair1",-1);
+            if(koutyokuair <= 0 && !isGround && combosu == 0 && !wazaair)
+            {
+                StartCoroutine("attackair1", -1);
+            }
+            if ( !isGround && combosu == 1 && cansel >= 0 && hit)
+            {
+                StartCoroutine("attackair2", -1); 
+       
+                
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Z) && cansel >= 0 && !isGround && combosu == 1 && hit)
-        {
-
-
-            StartCoroutine("attackair2",-1);
-
-        }
-
+       
+        
+        
         //空中攻撃１　Ｃ
-        if (Input.GetKeyDown(KeyCode.C) && koutyokuair <= 0 && !isGround && combosu == 0 && !wazaair)
+        if (Input.GetKeyDown(KeyCode.C) )
 
         {
 
-            StartCoroutine("attackair1",1);
-     
-        }
+            if (koutyokuair <= 0 && !isGround && combosu == 0 && !wazaair)
+            {
+                StartCoroutine("attackair1", 1);
+            }
+            if (!isGround && combosu == 1 && cansel >= 0 && hit)
+            {
+                StartCoroutine("attackair2", 1);
 
-        if (Input.GetKeyDown(KeyCode.C) && cansel >= 0 && !isGround && combosu == 1 && hit)
-        {
 
+            }
 
-            StartCoroutine("attackair2",1);
-    
 
         }
         //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -763,7 +1115,6 @@ public class playercontroller2 : MonoBehaviour {
             dead = true;
             GameObject go = Instantiate(deadbody) as GameObject;
             go.transform.position = new Vector2(this.transform.position.x , this.transform.position.y);
-            Destroy(this.gameObject);
             this.textcontroller.GetComponent<textcontroller>().gameoverkansu();
         }
         //タメ時間をリセット
@@ -775,9 +1126,10 @@ public class playercontroller2 : MonoBehaviour {
         //エフェクト関係
         if(tamezikan > 0.5f && tamezikan <= 2)
         {
+
             GetComponent<ParticleSystem>().Play();
             ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
-            par.startColor = Color.yellow;
+            par.startColor = Color.green;
             if (chagese == 0)
             {
                 audioSource[2].Play();
@@ -789,7 +1141,7 @@ public class playercontroller2 : MonoBehaviour {
         {
             GetComponent<ParticleSystem>().Play();
             ParticleSystem.MainModule par = GetComponent<ParticleSystem>().main;
-            par.startColor = Color.red;
+            par.startColor = Color.cyan;
             if(chagese == 1)
             {
                 audioSource[0].PlayOneShot(sound[4]);
@@ -800,12 +1152,12 @@ public class playercontroller2 : MonoBehaviour {
         else if(tamezikan <= 0.5f)
         {
             GetComponent<ParticleSystem>().Stop();
+            audioSource[2].Stop();
 
-            if (chagese == 2)
-            {
-                audioSource[2].Stop();
-                chagese = 0;
-            }
+            
+                
+            chagese = 0;
+            
         }
     }
 }

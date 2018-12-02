@@ -57,7 +57,7 @@ public class zakocontoroller : MonoBehaviour {
         //ダメージ
         go.GetComponent<hitboxenemycontroller>().damege = 1;
         //ヒット時硬直差
-        go.GetComponent<hitboxenemycontroller>().hitkoutyoku = 0.8f;
+        go.GetComponent<hitboxenemycontroller>().hitkoutyoku = 0.6f;
         Destroy(go, 0.3f);
     }
     //フェイント関数
@@ -119,16 +119,7 @@ public class zakocontoroller : MonoBehaviour {
         float b = this.transform.position.x;
         float c = System.Math.Abs(a - b);
 
-        //向き反転
-        if(a-b > 0)
-        {
-            this.gameObject.transform.localScale = new Vector2(1,1);
-        }
-        else if(a-b < 0)
-        {
-            this.gameObject.transform.localScale = new Vector2(-1, 1);
-        }
-
+ 
 
         if (koutyoku >= 0)
         {
@@ -146,12 +137,21 @@ public class zakocontoroller : MonoBehaviour {
 
         cycle += Time.deltaTime;
         if(cycle > 1 && hidankoutyoku <= 0)
-        {
+        {       //向き反転
+            if (a - b > 0)
+            {
+                this.gameObject.transform.localScale = new Vector2(1, 1);
+            }
+            else if (a - b < 0)
+            {
+                this.gameObject.transform.localScale = new Vector2(-1, 1);
+            }
+
             cycle = 0;
             int d = Random.Range(1, 6);
              if (c < 2)
             {
-                if(d > 2 )
+                if(d > 6)
                 {
                     StartCoroutine("attack1");
                 }
