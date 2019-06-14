@@ -9,6 +9,8 @@ TagManager:
   - hitboxplayer
   - player
   - tama
+  - doragon
+  - enemycon
   layers:
   - Default
   - TransparentFX
@@ -24,10 +26,10 @@ TagManager:
   - sonzai
   - air
   - hitboxenemy
-  - 
-  - 
-  - 
-  - 
+  - sonzaitekidousi
+  - enemydead
+  - wall
+  - sonzaip
   - 
   - 
   - 
@@ -46,12 +48,27 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Coin
+  - name: enemydead
     uniqueID: 3534837493
     locked: 0
-  - name: Block
+  - name: enemy0
     uniqueID: 2494971979
     locked: 0
-  - name: UI
-    uniqueID: 4086813705
+  - name: enemy1
+    uniqueID: 1560949465
+    locked: 0
+  - name: enemy2
+    uniqueID: 3721009495
+    locked: 0
+  - name: enemy3
+    uniqueID: 1885236153
+    locked: 0
+  - name: enemy4
+    uniqueID: 406274879
+    locked: 0
+  - name: player
+    uniqueID: 1740927033
+    locked: 0
+  - name: effect
+    uniqueID: 656917457
     locked: 0
